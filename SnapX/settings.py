@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'crispy_forms',
-    "crispy_bootstrap5",
+    'crispy_bootstrap5',
     'users',
 ]
 
@@ -133,3 +133,7 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = ''
+LOGIN_URL = 'login'
+LOGIN_URL = 'login'
