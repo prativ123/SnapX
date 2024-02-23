@@ -43,13 +43,13 @@ https://templatemo.com/tm-576-snapx-photography
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="index.html" class="logo">
+                    <a href="{% url 'index' %}" class="logo">
                         <img src="{% static 'images/logo.png'%}" alt="SnapX Photography">
                     </a>
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li><a href="index.html" class="active">Home</a></li>
+                        <li><a href="{% url 'index' %}" class="active">Home</a></li>
                         <li class="has-sub">
                             <a href="javascript:void(0)">Photos &amp; Videos</a>
                             <ul class="sub-menu">
@@ -57,15 +57,26 @@ https://templatemo.com/tm-576-snapx-photography
                                 <li><a href="contest-details.html">Single Contest</a></li>
                             </ul>
                         </li>
-                        <li><a href="categories.html">Categories</a></li>
+                        <li><a href="{% url 'categories' %}">Categories</a></li>
                         <li><a href="users.html">Users</a></li>
-                    </ul>   
+                    </ul>
+                    
+
+
+                    {% if user.is_authenticated %}
+                    <div class="border-button">
+                        <a href="" class="sign-in-up"><i class="fa fa-user"></i> {{user.username}}</a>
+                        <a href="{% url 'logout' %}" class="sign-in-up">Logout</a>
+                      </div>
+
+                    {% else %}   
                     <div class="border-button">
                       <a id="modal_trigger" href="#modal" class="sign-in-up"><i class="fa fa-user"></i> Sign In/Up</a>
                     </div>
                     <a class='menu-trigger'>
                         <span>Menu</span>
                     </a>
+                    {% endif %}
                     <!-- ***** Menu End ***** -->
                 </nav>
             </div>
@@ -79,7 +90,20 @@ https://templatemo.com/tm-576-snapx-photography
         <span class="header_title">Login</span>
         <span class="modal_close"><i class="fa fa-times"></i></span>
     </div>
-
+    <div class="messages-container" style= "margin-top: 10px; display: flex; justify-content: center; z-index: 1001; position: relative;">
+        {% for msg in messages %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success">
+                    {{ msg }}
+                </div>
+            {% endif %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger">
+                    {{ msg }}
+                </div>
+            {% endif %}
+        {% endfor %}
+       </div>
     <section class="popupBody">
         <!-- Social Login -->
         <div class="social_login">
@@ -101,14 +125,15 @@ https://templatemo.com/tm-576-snapx-photography
             </div>
 
             <div class="action_btns">
-                <div class="one_half"><a href="#" id="login_form" class="btn">Login</a></div>
-                <div class="one_half last"><a href="#" id="register_form" class="btn">Sign up</a></div>
+                <div class="one_half"><a href="{url 'login' }" id="login_form" class="btn">Login</a></div>
+                <div class="one_half last"><a href="{url 'register' }" id="register_form" class="btn">Sign up</a></div>
             </div>
         </div>
 
         <!-- Username & Password Login form -->
         <div class="user_login">
-            <form action="" method="post">
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
                 <label>Email / Username</label>
                 <input name="username" type="text" id="username" />
               <br />
@@ -133,7 +158,8 @@ https://templatemo.com/tm-576-snapx-photography
 
         <!-- Register Form -->
         <div class="user_register">
-            <form action="" method="post">
+            <form action="{% url 'register' %}" method="post">
+                {% csrf_token %}
                 <label>Username</label>
                 <input name="username" type="text" id="username" />
                 <br />
@@ -186,6 +212,31 @@ https://templatemo.com/tm-576-snapx-photography
   <script src="{% static 'js/tabs.js'%}"></script>
   <script src="{% static 'js/popup.js'%}"></script>
   <script src="{% static 'js/custom.js'%}"></script>
+
+  <script>
+    // Function to open the modal and click the appropriate button (login or register)
+    function openModal() {
+        var currentUrl = window.location.pathname;
+        if (currentUrl === '/login/') {
+            var modalTrigger = document.getElementById('modal_trigger');
+            var loginButton = document.getElementById('login_form');
+            modalTrigger.click(); // Trigger a click event on the modal trigger link
+            loginButton.click(); // Trigger a click event on the login button
+        } else if (currentUrl === '/register/') {
+            var modalTrigger = document.getElementById('modal_trigger');
+            var registerButton = document.getElementById('register_form');
+            modalTrigger.click(); // Trigger a click event on the modal trigger link
+            registerButton.click(); // Trigger a click event on the register button
+        }
+    }
+
+    // Check if the URL matches '/login' or '/register' and open the modal accordingly
+    document.addEventListener('DOMContentLoaded', function() {
+        openModal();
+    });
+ </script>
+
+
 
   </body>
 </html>

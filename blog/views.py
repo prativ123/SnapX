@@ -19,3 +19,9 @@ def contests(request):
     }
     
     return render(request, 'blog/contests.html',context)
+
+def categories(request):
+    context={
+        'posts':Post.objects.all()[:6]
+    }
+    return render(request, 'blog/categories.html',context)
