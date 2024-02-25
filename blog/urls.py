@@ -7,6 +7,7 @@ urlpatterns = [
     path('',index, name='index'),
     path('contests/',contests, name='contests'),
     path('categories/',categories, name='categories'),
+    path('post/new/',PostCreateView.as_view(), name='post-create'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
