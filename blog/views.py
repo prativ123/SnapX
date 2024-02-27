@@ -9,6 +9,7 @@ from django.views.generic import (
     DeleteView
 )
 from .models import *
+from users.models import *
 # Create your views here.
 # def index(request):
 #     return HttpResponse("Hello World!")
@@ -31,9 +32,16 @@ def contests(request):
 
 def categories(request):
     context={
-        'posts':Post.objects.all()[:6]
+        'posts':Post.objects.all()[:6],
+        'users':Profile.objects.all()
     }
     return render(request, 'blog/categories.html',context)
+
+def allposts(request):
+    context={
+        'posts':Post.objects.order_by('date_posted')
+    }
+    return render(request, 'blog/allposts.html',context)
 
 
 
